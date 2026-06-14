@@ -10,6 +10,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from bot_config import BOT_TOKEN
 from handlers.start import router as start_router
 from handlers.catalog import router as catalog_router
+from handlers.profile import router as profile_router
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 
@@ -26,7 +27,7 @@ async def main():
     # Регистрируем роутеры хэндлеров по этапам
     dp.include_router(start_router)
     dp.include_router(catalog_router)
-    # dp.include_router(profile.router)
+    dp.include_router(profile_router)
     # dp.include_router(purchase.router)
 
     logging.info("Telegram Бот успешно запущен!")

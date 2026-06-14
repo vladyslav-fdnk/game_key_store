@@ -38,7 +38,7 @@ async def show_catalog(message: types.Message):
 
     for game in games:
         keys_count = game.available_keys
-        status_text = f"💚 В наличии: <b>{keys_count} шт.</b>" if keys_count > 0 else "🔴 Нет в наличии"
+        status_text = f" В наличии: <b>{keys_count} шт.</b>" if keys_count > 0 else "🔴 Нет в наличии"
 
         info_text = (
             f"🎬 <b>{game.title}</b>\n\n"
