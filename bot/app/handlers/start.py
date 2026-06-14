@@ -2,6 +2,8 @@ from aiogram import Router, types
 from aiogram.filters import CommandStart
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
+from asgiref.sync import sync_to_async
+
 import sys
 import os
 
@@ -22,7 +24,9 @@ async def cmd_start(message: types.Message):
     tg_user = message.from_user
 
     # 🌟 Бизнес-логика: Сохраняем пользователя в Базу Данных
-    user, created = TelegramUser.objects.get_or_create(
+    user, created = await sync_to_async(
+        TelegramUser.objects.get_or_create
+    )(
         telegram_id=tg_user.id,
         defaults={
             "username": tg_user.username,
@@ -32,11 +36,11 @@ async def cmd_start(message: types.Message):
     )
 
     if not created:
-        # Обновим имя и ник, если они поменялись
         user.username = tg_user.username
         user.first_name = tg_user.first_name or ""
         user.last_name = tg_user.last_name or ""
-        user.save()
+
+        await sync_to_async(user.save)()
 
     # Готовим кнопки главного меню
     builder = ReplyKeyboardBuilder()
@@ -45,9 +49,9 @@ async def cmd_start(message: types.Message):
     builder.adjust(2)
 
     welcome_text = (
-        f"👋 Привет, {tg_user.first_name}!"
-        f"Добро пожаловать в самый быстрый <b>Steam Key Store</b> в Telegram! "
-        f"Здесь вы можете приобрести лицензионные ключи активации ваших любимых игр за ⭐ <b>Telegram Stars</b>."
+        f"👋 Привет, {tg_user.first_name}!\n\n"
+        f"Добро пожаловать в самый быстрый <b>Steam Key Store</b> в Telegram! \n"
+        f"Здесь вы можете приобрести лицензионные ключи активации ваших любимых игр за ⭐ <b>Telegram Stars</b>.\n\n"
         f"Пользуйтесь меню ниже для просмотра каталога!"
     )
 

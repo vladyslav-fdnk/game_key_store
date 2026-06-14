@@ -7,7 +7,7 @@ services:
     environment:
       - POSTGRES_DB=steam_store
       - POSTGRES_USER=postgres_admin
-      - POSTGRES_PASSWORD=super_secure_pass_123
+      - POSTGRES_PASSWORD=1243
     ports:
       - "5432:5432"
     healthcheck:
