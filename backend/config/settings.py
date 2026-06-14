@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'games',
     'users',
     'orders',
+    'payments',
+    'api',
 
 ]
 

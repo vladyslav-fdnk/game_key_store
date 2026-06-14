@@ -1,10 +1,10 @@
 from django.db import transaction
 from django.core.exceptions import ValidationError
-from .models import Order
 from games.models import SteamKey
 
 
-def issue_key(order: Order) -> SteamKey:
+
+def complete_order(order):
     """
     ⚡️ САМАЯ ВАЖНАЯ БИЗНЕС-ЛОГИКА ПРОЕКТА.
     Атомарная выдача ключа для оплаченного заказа с защитой от двойных продаж (Race Condition).
@@ -44,3 +44,28 @@ def issue_key(order: Order) -> SteamKey:
         order.save()
 
         return available_key
+
+
+
+def issue_key(order):
+    key = SteamKey.objects.select_for_update().filter(
+        game=order.game, is_sold=False
+    ).first()
+    if not key:
+        raise Exception("Нет доступных ключей")
+    key.is_sold = True
+    key.save()
+    order.assigned_key = key
+    order.status = "COMPLETED"
+    order.save()
+    return key
+
+
+def fulfill_order(order):
+    if order.status != "PAID":
+        return
+
+    if order.assigned_key:
+        return order.assigned_key
+
+from games.models import SteamKey

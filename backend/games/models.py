@@ -20,10 +20,10 @@ class Game(models.Model):
     def __str__(self):
         return self.title
 
-    # @property
-    # def available_keys_count(self):
-    #     # Количество непроданных ключей к этой игре
-    #     return self.keys.filter(is_sold=False).count()
+    @property
+    def available_keys_count(self):
+        # Количество непроданных ключей к этой игре
+        return self.keys.filter(is_sold=False).count()
 
 
 class SteamKey(models.Model):

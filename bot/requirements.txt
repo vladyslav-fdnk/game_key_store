@@ -1,5 +1,6 @@
-aiogram>=3.3.0
 Django>=4.2,<5.0
-psycopg2-binary>=2.9.6
-django-environ>=0.11.2
-djangorestframework>=3.17.1
+asgiref
+django-environ
+psycopg2-binary
+aiogram
+httpx
