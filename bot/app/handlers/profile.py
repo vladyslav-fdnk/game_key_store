@@ -24,7 +24,7 @@ async def show_profile(message: types.Message):
         return
 
     text = (
-        f"👤 Профиль\n\n"
+        f"👤 Профиль- {message.from_user.username}\n\n"
         f"ID: {profile_data['telegram_id']}\n"
         f"📅 Регистрация: {profile_data['registered_at']}\n"
         f"📦 Заказов: {profile_data['total_orders']}\n"
