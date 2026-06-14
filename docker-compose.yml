@@ -1,21 +1,24 @@
-version: '3.8'
-
 services:
   db:
     image: postgres:15-alpine
-    container_name: steam_key_db
-    environment:
-      POSTGRES_DB: steam_key_store
-      POSTGRES_USER: store_admin
-      POSTGRES_PASSWORD: 1243
-    ports:
-      - "5432:5432"
+    container_name: steam_store_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=steam_store
+      - POSTGRES_USER=postgres_admin
+      - POSTGRES_PASSWORD=super_secure_pass_123
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres_admin -d steam_store"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  web:
+  backend:
     build: ./backend
-    container_name: steam_key_backend
+    container_name: steam_store_backend
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./backend:/app
@@ -24,7 +27,25 @@ services:
     env_file:
       - .env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+
+  bot:
+    build: ./bot
+    container_name: steam_store_bot
+    command: python app/main.py
+    environment:
+      - PYTHONPATH=/backend
+    volumes:
+      - ./bot:/app
+      - ./backend:/backend  # Даем доступ к backend для Django ORM
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      backend:
+        condition: service_started
 
 volumes:
   postgres_data:
