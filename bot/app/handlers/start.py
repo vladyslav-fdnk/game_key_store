@@ -4,6 +4,8 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 from asgiref.sync import sync_to_async
 
+import logging
+
 import sys
 import os
 
@@ -21,6 +23,7 @@ router = Router()
 
 @router.message(CommandStart())
 async def cmd_start(message: types.Message):
+    logging.info("START HANDLER CALLED")
     tg_user = message.from_user
 
     # 🌟 Бизнес-логика: Сохраняем пользователя в Базу Данных

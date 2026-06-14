@@ -9,7 +9,7 @@ class SteamKeyInline(admin.TabularInline):
 
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
-    list_display = ("title", "price_stars", "available_keys_count", "created_at")
+    list_display = ("title", "price_stars", "created_at")
     search_fields = ("title",)
     inlines = [SteamKeyInline]
 

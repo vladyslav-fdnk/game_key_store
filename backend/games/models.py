@@ -13,13 +13,17 @@ class Game(models.Model):
         verbose_name_plural = "Игры"
         ordering = ["-created_at"]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.available_keys = None
+
     def __str__(self):
         return self.title
 
-    @property
-    def available_keys_count(self):
-        # Количество непроданных ключей к этой игре
-        return self.keys.filter(is_sold=False).count()
+    # @property
+    # def available_keys_count(self):
+    #     # Количество непроданных ключей к этой игре
+    #     return self.keys.filter(is_sold=False).count()
 
 
 class SteamKey(models.Model):
