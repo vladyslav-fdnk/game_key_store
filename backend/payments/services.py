@@ -8,7 +8,7 @@ def process_successful_payment(order_id: int, transaction_id: str, provider: str
     with transaction.atomic():
         order = Order.objects.select_for_update().get(id=order_id)
 
-        # Назначаем свободный ключ если ещё не назначен
+
         if not order.assigned_key:
             key = SteamKey.objects.select_for_update().filter(
                 game=order.game, is_sold=False

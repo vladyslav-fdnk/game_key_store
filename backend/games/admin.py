@@ -3,7 +3,7 @@ from .models import Game, SteamKey
 
 class SteamKeyInline(admin.TabularInline):
     model = SteamKey
-    extra = 3  # Количество пустых полей для быстрого добавления ключей
+    extra = 3
     fields = ("key_value", "is_sold")
     readonly_fields = ("is_sold",)
 

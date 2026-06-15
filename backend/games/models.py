@@ -22,7 +22,7 @@ class Game(models.Model):
 
     @property
     def available_keys_count(self):
-        # Количество непроданных ключей к этой игре
+
         return self.keys.filter(is_sold=False).count()
 
 
