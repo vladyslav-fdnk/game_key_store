@@ -1,8 +1,13 @@
 from aiogram import Router, types
 from aiogram.filters import CommandStart
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
+from aiogram.types import WebAppInfo, InlineKeyboardMarkup, InlineKeyboardButton
+
 from services.backend_api import BackendAPIClient
 import logging
+import os
+
+WEBAPP_URL = os.getenv("WEBAPP_URL", "https://unmanned-thicket-bacteria.ngrok-free.app/webapp/catalog/")
 
 router = Router()
 
@@ -30,7 +35,8 @@ async def cmd_start(message: types.Message):
     builder.button(text="👤 Мой профиль")
     builder.button(text="📋 История покупок")
     builder.adjust(2)
-    
+
+
     await message.answer(
         text=(
             f"👋 Привет, {tg_user.first_name}!\n\n"
@@ -41,3 +47,11 @@ async def cmd_start(message: types.Message):
         reply_markup=builder.as_markup(resize_keyboard=True),
         parse_mode="HTML"
     )
+
+    webapp_keyboard = InlineKeyboardMarkup(inline_keyboard=[[
+        InlineKeyboardButton(
+            text="🌐 Открыть магазин",
+            web_app=WebAppInfo(url=WEBAPP_URL)
+        )
+    ]])
+    await message.answer("Или откройте полный магазин:", reply_markup=webapp_keyboard)

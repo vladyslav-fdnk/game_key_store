@@ -39,6 +39,7 @@ services:
       PYTHONDONTWRITEBYTECODE: 1
       BACKEND_URL: http://backend:8000
       PYTHONPATH: /app/app
+      WEBAPP_URL: https://unmanned-thicket-bacteria.ngrok-free.dev/webapp/catalog/
     volumes:
       - ./bot:/app
     env_file:
